@@ -6,18 +6,18 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {AccountService} from "../_services";
+import { AuthenticationService} from "../_services";
 import {environment} from "../../environments/environment";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
   constructor(
-    private accountService: AccountService
+    private authenticationService: AuthenticationService
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const user = this.accountService.userInfo;
+    const user = this.authenticationService.optUserInfo;
     const isLoggedIn = user && user.token;
     const isApiUrl = request.url.startsWith(environment.apiUrl);
     if (isLoggedIn && isApiUrl) {

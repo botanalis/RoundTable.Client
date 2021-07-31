@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {User} from "./_models";
-import {AccountService} from "./_services";
+import {AuthenticationService} from "./_services";
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,12 @@ export class AppComponent {
   user: User | null | undefined;
 
   constructor(
-    private accountService: AccountService
+    private authenticationService: AuthenticationService
   ) {
-    this.accountService.user.subscribe(x => this.user = x);
+    this.authenticationService.optUser.subscribe(x => this.user = x);
   }
 
   logout() {
-    this.accountService.logout();
+    this.authenticationService.logout();
   }
 }
