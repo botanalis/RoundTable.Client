@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
   form: FormGroup;
   loading = false;
@@ -14,15 +14,17 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.form = new FormGroup({});
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      account: ['', Validators.required],
-      password: ['', Validators.required]
+      userName: ['', Validators.required],
+      account:  ['', Validators.required],
+      password:  ['', Validators.required, Validators.minLength(6)]
     });
   }
 
@@ -38,8 +40,8 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-
-
   }
+
+
 
 }
