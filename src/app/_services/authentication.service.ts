@@ -27,7 +27,7 @@ export class AuthenticationService {
   }
 
   login(account: string, password: string) {
-    const url = `${environment.apiUrl}/users/authenticate`;
+    const url = `${environment.apiUrl}/Users/Login`;
     return this.http.post<User>(url, {account, password})
       .pipe(map(user => {
         localStorage.setItem(LOCAL_STORAGE_OPT_USER_KEY, JSON.stringify(user));

@@ -14,6 +14,7 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'account', loadChildren: accountModule},
+      { path: '',   redirectTo: '/home', pathMatch: 'full' },
     ]
   },
   { path: 'login', component: LoginComponent },
