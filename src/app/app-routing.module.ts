@@ -7,13 +7,15 @@ import {LayoutComponent} from "./views/layout/layout.component";
 import {RegisterComponent} from "./views/register/register.component";
 
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
+const meetModule = () => import('./views/meet/meet.module').then(x => x.MeetModule);
 
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, canActivate: [AuthGuard],
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'account', loadChildren: accountModule},
+      { path: 'account', loadChildren: accountModule },
+      { path: 'meet', loadChildren: meetModule },
       { path: '',   redirectTo: '/home', pathMatch: 'full' },
     ]
   },
