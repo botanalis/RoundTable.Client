@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +9,8 @@ import { HomeComponent } from './views/home/home.component';
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
 import {LoginComponent} from "./views/login/login.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {appInitializer} from "./_helpers/app.initializer";
+import {AuthenticationService} from "./_services";
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     ReactiveFormsModule
   ],
   providers: [
+    // { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthenticationService]},
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],

@@ -14,6 +14,7 @@ export class AuthenticationService {
 
   private optUserSubject: BehaviorSubject<User | null>;
   public optUser: Observable<User | null>;
+  private refreshTokenTimeOut: any;
 
   constructor(
     private http: HttpClient
@@ -32,12 +33,39 @@ export class AuthenticationService {
       .pipe(map(user => {
         localStorage.setItem(LOCAL_STORAGE_OPT_USER_KEY, JSON.stringify(user));
         this.optUserSubject.next(user);
+        this.startRefreshTokenTimer();
+        return user;
+      }));
+  }
+
+  refreshToken() {
+    const url = `${environment.apiUrl}/Users/RefreshToken`;
+    return this.http.get<User>(url)
+      .pipe(map((user) => {
+        localStorage.setItem(LOCAL_STORAGE_OPT_USER_KEY, JSON.stringify(user));
+        this.optUserSubject.next(user);
+        this.startRefreshTokenTimer();
         return user;
       }));
   }
 
   logout() {
+    const url = `${environment.apiUrl}/Users/LogOut`;
+    this.http.get(url).subscribe();
+    this.stopRefreshTokenTimer();
     localStorage.removeItem(LOCAL_STORAGE_OPT_USER_KEY);
     this.optUserSubject.next(null);
+  }
+
+  private startRefreshTokenTimer() {
+    const jwtToken = JSON.parse(atob(this.optUserInfo.token.split('.')[1]));
+
+    const expires = new Date(jwtToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this.refreshTokenTimeOut = setTimeout(() => this.refreshToken().subscribe(), timeout);
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this.refreshTokenTimeOut);
   }
 }
